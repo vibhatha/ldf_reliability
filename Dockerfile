@@ -1,6 +1,11 @@
 # Use Node.js official image as the base
 FROM node:18-alpine
 
+# Create the choreo user and group
+RUN addgroup -g 10014 choreo && \
+    adduser -D -u 10014 -G choreo choreouser
+
+
 # Install required dependencies
 RUN apk add --no-cache git python3 make g++
 
@@ -22,6 +27,9 @@ COPY ./kuma-uptime-backups/data /app/data/
 
 # Expose the default port
 EXPOSE 3001
+
+# Explicitly set USER to 10014 (choreouser)
+USER 10014
 
 # Set environment variable for the data directory
 ENV UPTIME_KUMA_DATA_DIR=/app/data
