@@ -4,7 +4,7 @@ FROM node:18-alpine
 # Define backup version environment variable with a default value
 ARG KUMA_DATA_BACKUP_VERSION
 RUN echo "KUMA_DATA_BACKUP_VERSION: ${KUMA_DATA_BACKUP_VERSION}"
-ENV KUMA_DATA_BACKUP_VERSION=${KUMA_DATA_BACKUP_VERSION:-v2}
+ENV KUMA_DATA_BACKUP_VERSION=${KUMA_DATA_BACKUP_VERSION:-v4}
 
 # Create the choreo user and group
 RUN addgroup -g 10014 choreo && \
