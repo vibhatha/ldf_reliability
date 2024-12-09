@@ -32,4 +32,6 @@ If you want to deploy this in Choreo, you can use the following steps:
     - `KUMA_DATA_BACKUP_VERSION`
 3. Make sure to test the service locally before deploying it to Choreo. Namely you may want to do config changes and make necessary backups locally and then deploy to Choreo.
 
+## TODO
 
+The backup versioning done here is wrong, this must be moved to a secure blob store. Since this is a dev environment, and not production we could keep it, but as soon as we move to production this must be moved to a secure blob store. 
