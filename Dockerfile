@@ -41,12 +41,12 @@ EXPOSE 3001
 # Set environment variable for the data directory
 ENV UPTIME_KUMA_DATA_DIR=/app/data
 
-# Set PM2 home directory
-ENV PM2_HOME=/app/.pm2
+# Set PM2 home directory to a writable location
+ENV PM2_HOME=/home/choreouser/.pm2
 
 # Create the PM2 home directory and set permissions before switching user
-RUN mkdir -p /app/.pm2 && \
-    chown -R choreouser:choreo /app/.pm2
+RUN mkdir -p /home/choreouser/.pm2 && \
+    chown -R choreouser:choreo /home/choreouser/.pm2
 
 # Explicitly set USER to 10014 (choreouser)
 USER 10014
