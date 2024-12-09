@@ -38,18 +38,18 @@ RUN chown -R choreouser:choreo /app/data
 # Expose the default port
 EXPOSE 3001
 
-# Explicitly set USER to 10014 (choreouser)
-USER 10014
-
 # Set environment variable for the data directory
 ENV UPTIME_KUMA_DATA_DIR=/app/data
 
 # Set PM2 home directory
 ENV PM2_HOME=/app/.pm2
 
-# Create the PM2 home directory and set permissions
+# Create the PM2 home directory and set permissions before switching user
 RUN mkdir -p /app/.pm2 && \
     chown -R choreouser:choreo /app/.pm2
+
+# Explicitly set USER to 10014 (choreouser)
+USER 10014
 
 # Start the application using PM2
 CMD ["pm2-runtime", "server/server.js", "--name", "uptime-kuma"]
