@@ -6,10 +6,6 @@ ARG KUMA_DATA_BACKUP_VERSION
 RUN echo "KUMA_DATA_BACKUP_VERSION: ${KUMA_DATA_BACKUP_VERSION}"
 ENV KUMA_DATA_BACKUP_VERSION=${KUMA_DATA_BACKUP_VERSION:-v4}
 
-# Create the choreo user and group
-RUN addgroup -g 10014 choreo && \
-    adduser -D -u 10014 -G choreo choreouser
-
 # Install required dependencies
 RUN apk add --no-cache git python3 make g++
 
@@ -33,7 +29,7 @@ COPY kuma-uptime-backups/${KUMA_DATA_BACKUP_VERSION}/data/kuma.db-wal /app/data/
 COPY kuma-uptime-backups/${KUMA_DATA_BACKUP_VERSION}/data/screenshots /app/data/screenshots/
 
 # Set correct permissions
-RUN chown -R choreouser:choreo /app/data
+# RUN chown -R choreouser:choreo /app/data
 
 # Expose the default port
 EXPOSE 3001
@@ -44,9 +40,14 @@ ENV UPTIME_KUMA_DATA_DIR=/app/data
 # Set PM2 home directory to a writable location
 ENV PM2_HOME=/home/choreouser/.pm2
 
-# Create the PM2 home directory and set permissions before switching user
-RUN mkdir -p /home/choreouser/.pm2 && \
-    chown -R choreouser:choreo /home/choreouser/.pm2
+# Create the choreo user and group
+RUN addgroup -g 10014 choreo && \
+    adduser -D -u 10014 -G choreo choreouser
+
+# Create necessary directories and set permissions
+RUN mkdir -p /home/choreouser/.pm2 /app/data && \
+    chown -R 10014:10014 /home/choreouser/.pm2 /app/data && \
+    chmod -R 755 /home/choreouser/.pm2 /app/data
 
 # Explicitly set USER to 10014 (choreouser)
 USER 10014
